@@ -2,9 +2,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const title = document.querySelector(".quiz-title");
     const answers = document.querySelector(".quiz-answers");
-    const quizScore = document.querySelector(".score");
+    const quizScore = document.querySelector(".score-counter");
 
     const json = "./src/quiz.json";
+    let count = 0;
 
     fetch(json).then((response) => {
         return response.json();
@@ -18,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
             answers.appendChild(quizChoice);
             quizChoice.addEventListener('click', () => {
 
-                showQuestion(quiz, index);
+                showQuestion(quiz, 0);
             })
         })
 
@@ -35,16 +36,35 @@ document.addEventListener("DOMContentLoaded", () => {
                 answerBtn.addEventListener('click', () => {
                     if (quesAnswer.value === true) {
                         answerBtn.style.backgroundColor = "green";
+                        count += 1;
+                        quizScore.innerText = count;
                     } else {
                         answerBtn.style.backgroundColor = 'red';
                     }
+                    const disableBtns = document.querySelectorAll('button');
+                    disableBtns.forEach((btn) => {
+                        btn.disabled = true;
+
+                    })
+                    console.log(disableBtns);
                     setTimeout(() => {
                         if (index < quiz.questions.length - 1) {
                             showQuestion(quiz, index + 1)
                         } else {
-                            console.log('no more');
+                            let passFail = count / quiz.questions.length;
+                            console.log(passFail);
+                            if (passFail > 0.5) {
+                                title.innerText = "You passed!"
+                                answers.innerHTML = `<button>Play Again</button>`
+                            } else {
+                                title.innerText = "You did not pass. Play again?"
+                                answers.innerHTML = `<button>Play Again</button>`
+                                const playAgainBtn = answers.querySelector('button');
+                                playAgainBtn.addEventListener('click', () => { window.location.reload() })
+                            }
                         }
-                    }, 1000);
+                    }, 2000);
+
                     // setTimeout()
                 })
             })
