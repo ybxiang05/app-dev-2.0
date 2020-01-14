@@ -38,7 +38,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     } else {
                         answerBtn.style.backgroundColor = 'red';
                     }
-                    showQuestion(quiz, index + 1);
+                    setTimeout(() => {
+                        if (index < quiz.questions.length - 1) {
+                            showQuestion(quiz, index + 1)
+                        } else {
+                            console.log('no more');
+                        }
+                    }, 1000);
                     // setTimeout()
                 })
             })
