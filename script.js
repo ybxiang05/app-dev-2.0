@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const quizArray = myJson.quizzes;
         console.log(quizArray);
 
-        quizArray.forEach((quiz, index) => {
+        quizArray.forEach((quiz) => {
             const quizChoice = document.createElement('button');
             quizChoice.innerText = quiz.title;
             answers.appendChild(quizChoice);
@@ -56,14 +56,18 @@ document.addEventListener("DOMContentLoaded", () => {
                             if (passFail > 0.5) {
                                 title.innerText = "You passed!"
                                 answers.innerHTML = `<button>Play Again</button>`
+                                playAgain();
                             } else {
                                 title.innerText = "You did not pass. Play again?"
-                                answers.innerHTML = `<button>Play Again</button>`
-                                const playAgainBtn = answers.querySelector('button');
-                                playAgainBtn.addEventListener('click', () => { window.location.reload() })
+                                playAgain();
                             }
                         }
                     }, 2000);
+                    playAgain = () => {
+                        answers.innerHTML = `<button>Play Again</button>`
+                        const playAgainBtn = answers.querySelector('button');
+                        playAgainBtn.addEventListener('click', () => { window.location.reload() })
+                    }
 
                     // setTimeout()
                 })
