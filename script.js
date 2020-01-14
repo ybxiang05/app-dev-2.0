@@ -17,24 +17,32 @@ document.addEventListener("DOMContentLoaded", () => {
             quizChoice.innerText = quiz.title;
             answers.appendChild(quizChoice);
             quizChoice.addEventListener('click', () => {
-                title.innerText = quiz.questions[0].question;
-                answers.innerHTML = "";
-                console.log(quiz, "22");
-                const quizAns = quiz.questions[index].answers;
-                console.log(quizAns);
-                quizAns.forEach(quesAnswer => {
-                    const answerBtn = document.createElement('button');
-                    answerBtn.innerText = quesAnswer.content;
-                    answers.appendChild(answerBtn);
-                    answerBtn.addEventListener('click', () => {
-                        console.log(quesAnswer);
-                    })
-                })
-                //forEach
+
+                showQuestion(quiz, index);
             })
         })
 
-
+        showQuestion = (quiz, index) => {
+            title.innerText = quiz.questions[index].question;
+            answers.innerHTML = "";
+            console.log(quiz, "22");
+            const quizAns = quiz.questions[index].answers;
+            console.log(quizAns);
+            quizAns.forEach(quesAnswer => {
+                const answerBtn = document.createElement('button');
+                answerBtn.innerText = quesAnswer.content;
+                answers.appendChild(answerBtn);
+                answerBtn.addEventListener('click', () => {
+                    if (quesAnswer.value === true) {
+                        answerBtn.style.backgroundColor = "green";
+                    } else {
+                        answerBtn.style.backgroundColor = 'red';
+                    }
+                    showQuestion(quiz, index + 1);
+                    // setTimeout()
+                })
+            })
+        }
 
 
     })
