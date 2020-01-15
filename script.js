@@ -1,9 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
-
     const title = document.querySelector(".quiz-title");
     const answers = document.querySelector(".quiz-answers");
     const quizScore = document.querySelector(".score-counter");
-
     const json = "./src/quiz.json";
     let count = 0;
 
@@ -12,7 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }).then((myJson) => {
         const quizArray = myJson.quizzes;
         console.log(quizArray);
-
         quizArray.forEach((quiz) => {
             const quizChoice = document.createElement('button');
             quizChoice.innerText = quiz.title;
@@ -21,14 +18,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 showQuestion(quiz, 0);
             })
-        })
-
+        });
         showQuestion = (quiz, index) => {
             title.innerText = quiz.questions[index].question;
             answers.innerHTML = "";
             console.log(quiz, "22");
             const quizAns = quiz.questions[index].answers;
-            console.log(quizAns);
+            console.log(Array.isArray(quizAns));
             quizAns.forEach(quesAnswer => {
                 const answerBtn = document.createElement('button');
                 answerBtn.innerText = quesAnswer.content;
@@ -37,14 +33,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (quesAnswer.value === true) {
                         answerBtn.style.backgroundColor = "green";
                         count += 1;
-                        quizScore.innerText = count;
+                        quizScore.innerText = " " + count;
                     } else {
                         answerBtn.style.backgroundColor = 'red';
                     }
                     const disableBtns = document.querySelectorAll('button');
                     disableBtns.forEach((btn) => {
                         btn.disabled = true;
-
                     })
                     console.log(disableBtns);
                     setTimeout(() => {
@@ -68,13 +63,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         const playAgainBtn = answers.querySelector('button');
                         playAgainBtn.addEventListener('click', () => { window.location.reload() })
                     }
-
-                    // setTimeout()
                 })
             })
         }
-
-
     })
-
 }); //end doc ready
