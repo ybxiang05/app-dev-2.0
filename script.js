@@ -1,9 +1,19 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", startGame);
+
+let count = 0;
+function startGame() {
     const title = document.querySelector(".quiz-title");
     const answers = document.querySelector(".quiz-answers");
     const quizScore = document.querySelector(".score-counter");
     const json = "./src/quiz.json";
-    let count = 0;
+
+    const resetGame = () => {
+        count = 0;
+        quizScore.innerText = " " + count;
+        title.innerText = "Start";
+        answers.innerHTML = ``;
+        startGame();
+    }
 
     fetch(json).then((response) => {
         return response.json();
@@ -19,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 showQuestion(quiz, 0);
             })
         });
-        showQuestion = (quiz, index) => {
+        const showQuestion = (quiz, index) => {
             title.innerText = quiz.questions[index].question;
             answers.innerHTML = "";
             console.log(quiz, "22");
@@ -50,21 +60,21 @@ document.addEventListener("DOMContentLoaded", () => {
                             console.log(passFail);
                             if (passFail > 0.5) {
                                 title.innerText = "You passed!"
-                                answers.innerHTML = `<button>Play Again</button>`
-                                playAgain();
                             } else {
                                 title.innerText = "You did not pass. Play again?"
-                                playAgain();
                             }
+
+                            answers.innerHTML = `<button>Play Again</button>`
+                            playAgain();
                         }
                     }, 2000);
                     playAgain = () => {
                         answers.innerHTML = `<button>Play Again</button>`
                         const playAgainBtn = answers.querySelector('button');
-                        playAgainBtn.addEventListener('click', () => { window.location.reload() })
+                        playAgainBtn.addEventListener('click', resetGame)
                     }
                 })
             })
         }
     })
-}); //end doc ready
+}; //end doc ready
